@@ -5,8 +5,10 @@ from dotenv import load_dotenv
 
 # 加载环境变量
 load_dotenv()
-api_key= os.getenv('OPENAI_API_KEY')   
-base_url = os.getenv('OPENAI_API_BASE')
+# api_key= os.getenv('OPENAI_API_KEY')   
+# base_url = os.getenv('OPENAI_API_BASE')
+api_key = os.getenv('DEEPSEEK_API_KEY')
+base_url = "https://api.deepseek.com/v1"
 
 # 初始化 OpenAI 客户端
 client = OpenAI(
@@ -42,7 +44,8 @@ messages = [
 
 # 2. 使用定义的工具提示模型
 response = client.chat.completions.create(
-    model="gpt-4o-mini",
+    # model="gpt-4o-mini",
+    model="deepseek-chat",
     tools=tools,
     messages=messages,
 )
@@ -76,8 +79,10 @@ messages.append({
     "name": "get_horoscope",
     "content": json.dumps(result),
 })
+
 print("消息流程:")
 for i, message in enumerate(messages):
+    print(f"{i+1}. {message}")
     if isinstance(message, dict):
         role = message.get('role', 'unknown')
         if role == 'user':
@@ -90,7 +95,8 @@ for i, message in enumerate(messages):
 
 
 response = client.chat.completions.create(
-    model="gpt-4o-mini",
+    # model="gpt-4o-mini",
+    model="deepseek-chat",
     tools=tools,
     messages=messages,
 )
@@ -98,4 +104,5 @@ response = client.chat.completions.create(
 # 5. 模型应该能够给出响应！
 print("最终输出:")
 print(json.dumps(response.model_dump(), indent=2))
+print("=" * 60)
 print("\n" + response.choices[0].message.content)

@@ -11,7 +11,12 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # 导入 04-chat.py 模块
 import importlib.util
-spec = importlib.util.spec_from_file_location("chat_04", "04-chat.py")
+
+# spec = importlib.util.spec_from_file_location("chat_04", "04-chat.py")
+
+# 使用绝对路径导入模块
+chat_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "04-chat.py")
+spec = importlib.util.spec_from_file_location("chat_04", chat_file_path)
 chat_04 = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(chat_04)
 query = chat_04.query

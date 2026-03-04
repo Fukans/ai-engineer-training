@@ -16,8 +16,8 @@ print("正在解析文件...")
 script_path = Path(__file__).resolve()
 # 获取脚本所在的目录
 script_dir = script_path.parent
-# 构建docs目录的路径（与脚本同级）
-docs_path = script_dir / "docs"
+# 构建docs目录的路径（指向week01/docs目录）
+docs_path = script_dir.parent / "docs"
 
 # LlamaIndex提供了SimpleDirectoryReader方法，可以直接将指定文件夹中的文件加载为document对象，对应着解析过程
 documents = SimpleDirectoryReader(str(docs_path)).load_data()
@@ -37,11 +37,15 @@ query_engine = index.as_query_engine(
     streaming=True,
     # 此处使用qwen-plus模型，你也可以使用阿里云提供的其它qwen的文本生成模型：https://help.aliyun.com/zh/model-studio/getting-started/models#9f8890ce29g5u
     llm=OpenAILike(
-        model="qwen-plus",
-        api_base="https://dashscope.aliyuncs.com/compatible-mode/v1",
-        api_key=os.getenv("DASHSCOPE_API_KEY"),
+        # model="qwen-plus",
+        # api_base="https://dashscope.aliyuncs.com/compatible-mode/v1",
+        # api_key=os.getenv("DASHSCOPE_API_KEY"),
+        model="qwen3.5-plus",
+        api_base="https://coding.dashscope.aliyuncs.com/apps/anthropic",
+        api_key=os.getenv("ANTHROPIC_API_KEY"),
         is_chat_model=True
         ))
+
 print("正在生成回复...")
 streaming_response = query_engine.query('我们公司项目管理应该用什么工具')
 print("回答是：")
