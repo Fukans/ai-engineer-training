@@ -9,7 +9,7 @@ NODE check_water TYPE condition
   WHEN water.level >= 300ml
   DESCRIPTION "检查水箱水位"
 
-NODE add_water TYPE action
+NODE add_water TYPE action+
   DO ALERT "请添加水"
   DESCRIPTION "提醒添加水"
 
