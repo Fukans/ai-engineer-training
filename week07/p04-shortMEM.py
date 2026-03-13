@@ -2,10 +2,29 @@ import json
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
+# checkpointer是一个检查点，使用 InMemorySaver 将 Agent 的状态存储在内存中。
 checkpointer = InMemorySaver() 
-# InMemorySaver是一个检查点，将 Agent 的状态存储在内存中。
+
 # 在生产环境中，您通常会使用数据库或其他持久存储。请查阅检查点文档以获取更多选项。
 # #checkpointer被传递给 Agent 。这使得 Agent 能够在其调用之间持久化其状态。如果您使用LangGraph平台进行部署，该平台将为您提供一个生产就绪的检查点。
+
+# 生产环境持久化存储方案选择
+
+# 方案1：RedisSaver - 基于Redis的分布式存储（适用于高并发、低延迟场景）
+# from langgraph.checkpoint.redis import RedisSaver
+# checkpointer = RedisSaver.from_conn_string("redis://localhost:6379")
+
+# 方案2：PostgresSaver - 基于PostgreSQL的持久化存储（适用于企业级、数据持久化要求高的场景）
+# from langgraph.checkpoint.postgres import PostgresSaver
+# checkpointer = PostgresSaver.from_conn_string("postgresql://user:pass@localhost/db")
+
+# 方案3：FileSaver - 基于文件系统的本地存储（适用于小型项目、开发测试场景）
+# from langgraph.checkpoint.file import FileSaver
+# checkpointer = FileSaver.from_path("./checkpoints")
+
+# 方案4：SqliteSaver - 基于SQLite的轻量级存储（适用于快速原型、单机部署）
+# from langgraph.checkpoint.sqlite import SqliteSaver
+# checkpointer = SqliteSaver.from_conn_string("./checkpoints.db")
 
 def get_weather(city: str) -> str:
     """Get weather for a given city."""
